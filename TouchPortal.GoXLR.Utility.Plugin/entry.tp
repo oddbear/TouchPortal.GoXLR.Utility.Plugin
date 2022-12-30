@@ -1,0 +1,44 @@
+{
+  "sdk": 7,
+  "version": 1,
+  "name": "GoXLR Utility",
+  "id": "TouchPortal.GoXLR.Utility.Plugin",
+  "categories": [
+    {
+      "id": "TouchPortal.GoXLR.Utility.Plugin.category",
+      "name": "TouchPortal.GoXLR.Utility.Plugin",
+      "actions": [
+        {
+          "id": "dummy.action",
+          "name": "Dummy action to make connectors work",
+          "prefix": "Plugin",
+          "type": "communicate",
+          "tryInline": true
+        }],
+      "states": [],
+      "events": [],
+      "connectors": [
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.connector.faders.volume",
+          "name": "Fader volume",
+          "format": "Fader {$faderName$}",
+          "data": [
+            {
+              "id": "faderName",
+              "type": "choice",
+              "label": "Plugin",
+              "default": "A",
+              "valueChoices": [
+                "A",
+                "B",
+                "C",
+                "D"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "settings": []
+}
