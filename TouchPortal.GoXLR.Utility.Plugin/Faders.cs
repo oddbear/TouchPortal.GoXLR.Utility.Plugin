@@ -52,11 +52,11 @@ public class Faders
         var volume = patch.Value.GetInt32();
         _channelVolume[channelName] = ValuesHelper.FromVolumeToVolumePercentage(volume);
 
-        foreach (var pair in _faderChannel)
-        {
-            if (pair.Value == channelName)
-                RaiseUpdateFaderState(pair.Key);
-        }
+        var fader = _faderChannel
+            .SingleOrDefault(pair => pair.Value == channelName)
+            .Key;
+
+        RaiseUpdateFaderState(fader);
     }
 
     private void RaiseUpdateFaderState(FaderName fader)

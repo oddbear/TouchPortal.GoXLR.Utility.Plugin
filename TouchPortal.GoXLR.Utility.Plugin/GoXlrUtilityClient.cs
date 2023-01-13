@@ -6,6 +6,16 @@ using WebSocketSharp;
 
 namespace TouchPortal.GoXLR.Utility.Plugin;
 
+//Things to implement:
+//Volume
+//Channel mute
+//Sampler (might not be done yet)
+//Effects
+//Effects bank
+//Sampler bank (might not be done yet)
+//Bleep Toggle (might not be done yet)
+//Mic Toggle
+
 public class GoXlrUtilityClient : IDisposable
 {
     private readonly Thread _thread;

@@ -29,6 +29,7 @@ internal class Program
         serviceCollection.AddSingleton<GoXlrUtilityClient>();
         serviceCollection.AddSingleton<GoXlrUtilityPlugin>();
         serviceCollection.AddSingleton<Faders>();
+        serviceCollection.AddSingleton<Channels>();
 
         var serviceProvider = serviceCollection.BuildServiceProvider(true);
 

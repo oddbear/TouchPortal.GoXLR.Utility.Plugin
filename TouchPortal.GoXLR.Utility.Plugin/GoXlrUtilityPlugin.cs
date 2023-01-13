@@ -13,18 +13,25 @@ public class GoXlrUtilityPlugin : ITouchPortalEventHandler
     private readonly ITouchPortalClient _client;
 
     private readonly Faders _faders;
+    private readonly Channels _channels;
 
     public string PluginId => "TouchPortal.GoXLR.Utility.Plugin";
 
     public GoXlrUtilityPlugin(
         ITouchPortalClientFactory clientFactory,
         ILogger<GoXlrUtilityPlugin> logger,
-        Faders faders)
+        Faders faders,
+        Channels channels)
     {
         _client = clientFactory.Create(this);
+        
         _logger = logger;
+
         _faders = faders;
+        _channels = channels;
+
         _faders.VolumeUpdated += (_, tuple) => _client.ConnectorUpdate($"TouchPortal.GoXLR.Utility.Plugin.connector.faders.volume|faderName={tuple.fader}", tuple.volume);
+        _channels.VolumeUpdated += (_, tuple) => _client.ConnectorUpdate($"TouchPortal.GoXLR.Utility.Plugin.connector.channels.volume|channelName={tuple.channel}", tuple.volume);
     }
 
     public void Run()
@@ -70,9 +77,12 @@ public class GoXlrUtilityPlugin : ITouchPortalEventHandler
             case "TouchPortal.GoXLR.Utility.Plugin.connector.faders.volume":
                 _faders.SetVolumeUtility(message);
                 break;
+            case "TouchPortal.GoXLR.Utility.Plugin.connector.channels.volume":
+                _channels.SetVolume(message);
+                break;
         }
     }
-
+    
     public void OnShortConnectorIdNotificationEvent(ConnectorInfo connectorInfo)
     {
         //TODO:

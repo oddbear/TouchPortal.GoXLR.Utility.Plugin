@@ -36,6 +36,32 @@
               ]
             }
           ]
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.connector.channels.volume",
+          "name": "Channel volume",
+          "format": "Channel {$channelName$}",
+          "data": [
+            {
+              "id": "channelName",
+              "type": "choice",
+              "label": "Plugin",
+              "default": "System",
+              "valueChoices": [
+                "Mic",
+                "LineIn",
+                "Console",
+                "System",
+                "Game",
+                "Chat",
+                "Sample",
+                "Music",
+                "Headphones",
+                "MicMonitor",
+                "LineOut"
+              ]
+            }
+          ]
         }
       ]
     }
