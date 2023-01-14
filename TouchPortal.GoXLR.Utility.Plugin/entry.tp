@@ -3,20 +3,330 @@
   "version": 1,
   "name": "GoXLR Utility",
   "id": "TouchPortal.GoXLR.Utility.Plugin",
+  "configuration": {
+    "parentCategory" : "audio"
+  },
   "categories": [
     {
       "id": "TouchPortal.GoXLR.Utility.Plugin.category",
       "name": "TouchPortal.GoXLR.Utility.Plugin",
       "actions": [
         {
-          "id": "dummy.action",
-          "name": "Dummy action to make connectors work",
+          "id": "TouchPortal.GoXLR.Utility.Plugin.actions.faders.mute",
+          "name": "Fader mute",
           "prefix": "Plugin",
           "type": "communicate",
-          "tryInline": true
-        }],
-      "states": [],
-      "events": [],
+          "tryInline": true,
+          "format": "Fader {$faderName$}",
+          "hasHoldFunctionality": true,
+          "data": [
+            {
+              "id": "faderName",
+              "type": "choice",
+              "label": "Plugin",
+              "default": "A",
+              "valueChoices": [
+                "A",
+                "B",
+                "C",
+                "D"
+              ]
+            }
+          ]
+        }
+      ],
+      "states": [
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.channel.Mic.volume",
+          "type": "text",
+          "desc": "Channel Mic Volume",
+          "parentGroup": "Channel Volume",
+          "default": "0"
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.channel.LineIn.volume",
+          "type": "text",
+          "desc": "Channel LineIn Volume",
+          "parentGroup": "Channel Volume",
+          "default": "0"
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.channel.Console.volume",
+          "type": "text",
+          "desc": "Channel Console Volume",
+          "parentGroup": "Channel Volume",
+          "default": "0"
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.channel.System.volume",
+          "type": "text",
+          "desc": "Channel System Volume",
+          "parentGroup": "Channel Volume",
+          "default": "0"
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.channel.Game.volume",
+          "type": "text",
+          "desc": "Channel Game Volume",
+          "parentGroup": "Channel Volume",
+          "default": "0"
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.channel.Chat.volume",
+          "type": "text",
+          "desc": "Channel Chat Volume",
+          "parentGroup": "Channel Volume",
+          "default": "0"
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.channel.Sample.volume",
+          "type": "text",
+          "desc": "Channel Sample Volume",
+          "parentGroup": "Channel Volume",
+          "default": "0"
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.channel.Music.volume",
+          "type": "text",
+          "desc": "Channel Music Volume",
+          "parentGroup": "Channel Volume",
+          "default": "0"
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.channel.Headphones.volume",
+          "type": "text",
+          "desc": "Channel Headphones Volume",
+          "parentGroup": "Channel Volume",
+          "default": "0"
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.channel.MicMonitor.volume",
+          "type": "text",
+          "desc": "Channel MicMonitor Volume",
+          "parentGroup": "Channel Volume",
+          "default": "0"
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.channel.LineOut.volume",
+          "type": "text",
+          "desc": "Channel LineOut Volume",
+          "parentGroup": "Channel Volume",
+          "default": "0"
+        },
+
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.faders.A.volume",
+          "type": "text",
+          "desc": "Fader A Volume",
+          "parentGroup": "Fader Volume",
+          "default": "0"
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.faders.B.volume",
+          "type": "text",
+          "desc": "Fader B Volume",
+          "parentGroup": "Fader Volume",
+          "default": "0"
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.faders.C.volume",
+          "type": "text",
+          "desc": "Fader C Volume",
+          "parentGroup": "Fader Volume",
+          "default": "0"
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.faders.D.volume",
+          "type": "text",
+          "desc": "Fader D Volume",
+          "parentGroup": "Fader Volume",
+          "default": "0"
+        },
+
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.faders.A.channelname",
+          "type": "choice",
+          "desc": "Fader A Channel",
+          "parentGroup": "Fader Channel",
+          "default": "Mic",
+          "valueChoices": [
+            "Mic",
+            "LineIn",
+            "Console",
+            "System",
+            "Game",
+            "Chat",
+            "Sample",
+            "Music",
+            "Headphones",
+            "MicMonitor",
+            "LineOut"
+          ]
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.faders.B.channelname",
+          "type": "text",
+          "desc": "Fader B Channel",
+          "parentGroup": "Fader Channel",
+          "default": "Mic",
+          "valueChoices": [
+            "Mic",
+            "LineIn",
+            "Console",
+            "System",
+            "Game",
+            "Chat",
+            "Sample",
+            "Music",
+            "Headphones",
+            "MicMonitor",
+            "LineOut"
+          ]
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.faders.C.channelname",
+          "type": "text",
+          "desc": "Fader C Channel",
+          "parentGroup": "Fader Channel",
+          "default": "Mic",
+          "valueChoices": [
+            "Mic",
+            "LineIn",
+            "Console",
+            "System",
+            "Game",
+            "Chat",
+            "Sample",
+            "Music",
+            "Headphones",
+            "MicMonitor",
+            "LineOut"
+          ]
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.faders.D.channelname",
+          "type": "text",
+          "desc": "Fader D Channel",
+          "parentGroup": "Fader Channel",
+          "default": "Mic",
+          "valueChoices": [
+            "Mic",
+            "LineIn",
+            "Console",
+            "System",
+            "Game",
+            "Chat",
+            "Sample",
+            "Music",
+            "Headphones",
+            "MicMonitor",
+            "LineOut"
+          ]
+        },
+
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.faders.A.mute",
+          "type": "choice",
+          "desc": "Fader A Mute State",
+          "parentGroup": "Fader Mute State",
+          "default": "Unmuted",
+          "valueChoices": [
+            "Unmuted",
+            "MutedToX",
+            "MutedToAll"
+          ]
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.faders.B.mute",
+          "type": "choice",
+          "desc": "Fader B Mute State",
+          "parentGroup": "Fader Mute State",
+          "default": "Unmuted",
+          "valueChoices": [
+            "Unmuted",
+            "MutedToX",
+            "MutedToAll"
+          ]
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.faders.C.mute",
+          "type": "choice",
+          "desc": "Fader C Mute State",
+          "parentGroup": "Fader Mute State",
+          "default": "Unmuted",
+          "valueChoices": [
+            "Unmuted",
+            "MutedToX",
+            "MutedToAll"
+          ]
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.faders.D.mute",
+          "type": "choice",
+          "desc": "Fader D Mute State",
+          "parentGroup": "Fader Mute State",
+          "default": "Unmuted",
+          "valueChoices": [
+            "Unmuted",
+            "MutedToX",
+            "MutedToAll"
+          ]
+        }
+      ],
+      "events": [
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.events.faders.A.mute",
+          "name": "Fader A Mute Event",
+          "format": "Fader A $val",
+          "type": "communicate",
+          "valueType": "choice",
+          "valueChoices": [
+            "Unmuted",
+            "MutedToX",
+            "MutedToAll"
+          ],
+          "valueStateId": "TouchPortal.GoXLR.Utility.Plugin.states.faders.A.mute"
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.events.faders.B.mute",
+          "name": "Fader B Mute Event",
+          "format": "Fader B $val",
+          "type": "communicate",
+          "valueType": "choice",
+          "valueChoices": [
+            "Unmuted",
+            "MutedToX",
+            "MutedToAll"
+          ],
+          "valueStateId": "TouchPortal.GoXLR.Utility.Plugin.states.faders.B.mute"
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.events.faders.C.mute",
+          "name": "Fader C Mute Event",
+          "format": "Fader C $val",
+          "type": "communicate",
+          "valueType": "choice",
+          "valueChoices": [
+            "Unmuted",
+            "MutedToX",
+            "MutedToAll"
+          ],
+          "valueStateId": "TouchPortal.GoXLR.Utility.Plugin.states.faders.C.mute"
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.events.faders.D.mute",
+          "name": "Fader D Mute Event",
+          "format": "Fader D $val",
+          "type": "communicate",
+          "valueType": "choice",
+          "valueChoices": [
+            "Unmuted",
+            "MutedToX",
+            "MutedToAll"
+          ],
+          "valueStateId": "TouchPortal.GoXLR.Utility.Plugin.states.faders.D.mute"
+        }
+      ],
       "connectors": [
         {
           "id": "TouchPortal.GoXLR.Utility.Plugin.connector.faders.volume",

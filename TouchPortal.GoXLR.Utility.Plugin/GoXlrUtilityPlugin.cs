@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using TouchPortal.GoXLR.Utility.Plugin.Enums;
 using TouchPortalSDK;
 using TouchPortalSDK.Interfaces;
 using TouchPortalSDK.Messages.Events;
@@ -29,9 +30,34 @@ public class GoXlrUtilityPlugin : ITouchPortalEventHandler
 
         _faders = faders;
         _channels = channels;
+        
+        _faders.VolumeUpdated += FaderVolumeUpdated;
+        _faders.MuteUpdated += FaderMuteUpdated;
+        _faders.ChannelUpdated += FaderChannelUpdated;
 
-        _faders.VolumeUpdated += (_, tuple) => _client.ConnectorUpdate($"TouchPortal.GoXLR.Utility.Plugin.connector.faders.volume|faderName={tuple.fader}", tuple.volume);
-        _channels.VolumeUpdated += (_, tuple) => _client.ConnectorUpdate($"TouchPortal.GoXLR.Utility.Plugin.connector.channels.volume|channelName={tuple.channel}", tuple.volume);
+        _channels.VolumeUpdated += ChannelVolumeUpdate;
+    }
+
+    private void FaderChannelUpdated(FaderName faderName, ChannelName channelName)
+    {
+        _client.StateUpdate($"TouchPortal.GoXLR.Utility.Plugin.states.faders.{faderName}.channelname", channelName.ToString());
+    }
+
+    private void FaderVolumeUpdated(FaderName faderName, int volume)
+    {
+        _client.ConnectorUpdate($"TouchPortal.GoXLR.Utility.Plugin.connector.faders.volume|faderName={faderName}", volume);
+        _client.StateUpdate($"TouchPortal.GoXLR.Utility.Plugin.states.faders.{faderName}.volume", volume.ToString());
+    }
+
+    private void FaderMuteUpdated(FaderName faderName, MuteState muteState)
+    {
+        _client.StateUpdate($"TouchPortal.GoXLR.Utility.Plugin.states.faders.{faderName}.mute", muteState.ToString());
+    }
+
+    private void ChannelVolumeUpdate(ChannelName channelName, int volume)
+    {
+        _client.ConnectorUpdate($"TouchPortal.GoXLR.Utility.Plugin.connector.channels.volume|channelName={channelName}", volume);
+        _client.StateUpdate($"TouchPortal.GoXLR.Utility.Plugin.states.channel.{channelName}.volume", volume.ToString());
     }
 
     public void Run()
@@ -39,7 +65,7 @@ public class GoXlrUtilityPlugin : ITouchPortalEventHandler
         //Connect to Touch Portal:
         _client.Connect();
     }
-
+    
     public void OnInfoEvent(InfoEvent message)
     {
         //
@@ -62,7 +88,12 @@ public class GoXlrUtilityPlugin : ITouchPortalEventHandler
 
     public void OnActionEvent(ActionEvent message)
     {
-        //
+        switch (message.ActionId)
+        {
+            case "TouchPortal.GoXLR.Utility.Plugin.actions.faders.mute":
+                _faders.SetMute(message);
+                break;
+        }
     }
 
     public void OnNotificationOptionClickedEvent(NotificationOptionClickedEvent message)
@@ -75,7 +106,7 @@ public class GoXlrUtilityPlugin : ITouchPortalEventHandler
         switch (message.ConnectorId)
         {
             case "TouchPortal.GoXLR.Utility.Plugin.connector.faders.volume":
-                _faders.SetVolumeUtility(message);
+                _faders.SetVolume(message);
                 break;
             case "TouchPortal.GoXLR.Utility.Plugin.connector.channels.volume":
                 _channels.SetVolume(message);
