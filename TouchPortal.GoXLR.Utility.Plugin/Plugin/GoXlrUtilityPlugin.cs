@@ -6,7 +6,7 @@ using TouchPortalSDK.Interfaces;
 using TouchPortalSDK.Messages.Events;
 using TouchPortalSDK.Messages.Models;
 
-namespace TouchPortal.GoXLR.Utility.Plugin;
+namespace TouchPortal.GoXLR.Utility.Plugin.Plugin;
 
 public class GoXlrUtilityPlugin : ITouchPortalEventHandler
 {
@@ -18,8 +18,9 @@ public class GoXlrUtilityPlugin : ITouchPortalEventHandler
     private readonly Channels _channels;
     private readonly Effects _effects;
     private readonly Routing _routing;
+    private readonly Microphone _microphone;
 
-    private List<ConnectorInfo> _connectors = new ();
+    private List<ConnectorInfo> _connectors = new();
 
     public string PluginId => "TouchPortal.GoXLR.Utility.Plugin";
 
@@ -29,16 +30,18 @@ public class GoXlrUtilityPlugin : ITouchPortalEventHandler
         Faders faders,
         Channels channels,
         Effects effects,
-        Routing routing)
+        Routing routing,
+        Microphone microphone)
     {
         _client = clientFactory.Create(this);
-        
+
         _logger = logger;
 
         _faders = faders;
         _channels = channels;
         _effects = effects;
         _routing = routing;
+        _microphone = microphone;
 
         _faders.VolumeUpdated += FaderVolumeUpdated;
         _faders.MuteUpdated += FaderMuteUpdated;
@@ -51,6 +54,13 @@ public class GoXlrUtilityPlugin : ITouchPortalEventHandler
         _effects.EffectsEncoderAmountUpdated += EffectsOnEncoderAmountUpdated;
 
         _routing.RoutingUpdated += RoutingOnRoutingUpdated;
+
+        _microphone.MuteUpdated += MicrophoneOnMuteUpdated;
+    }
+
+    private void MicrophoneOnMuteUpdated(MuteState state)
+    {
+        _client.StateUpdate("TouchPortal.GoXLR.Utility.Plugin.states.cough.mute", state.ToString());
     }
 
     private void EffectsOnEncoderAmountUpdated(EncoderName encoderName, int amount)
@@ -106,7 +116,7 @@ public class GoXlrUtilityPlugin : ITouchPortalEventHandler
         //Connect to Touch Portal:
         _client.Connect();
     }
-    
+
     public void OnInfoEvent(InfoEvent message)
     {
         //
@@ -126,7 +136,7 @@ public class GoXlrUtilityPlugin : ITouchPortalEventHandler
     {
         //
     }
-    
+
     public void OnActionEvent(ActionEvent message)
     {
         if (message.ActionId.StartsWith("TouchPortal.GoXLR.Utility.Plugin.actions.routing."))
@@ -145,7 +155,10 @@ public class GoXlrUtilityPlugin : ITouchPortalEventHandler
         {
             case "TouchPortal.GoXLR.Utility.Plugin.actions.faders.mute":
                 _faders.SetMute(message);
-                break;
+                return;
+            case "TouchPortal.GoXLR.Utility.Plugin.actions.cough.mute":
+                _microphone.SetCoughMute(message);
+                return;
         }
     }
 
@@ -169,7 +182,7 @@ public class GoXlrUtilityPlugin : ITouchPortalEventHandler
                 break;
         }
     }
-    
+
     public void OnShortConnectorIdNotificationEvent(ConnectorInfo connectorInfo)
     {
         _connectors.Add(connectorInfo);

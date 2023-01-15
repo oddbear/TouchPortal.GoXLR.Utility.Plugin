@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using TouchPortal.GoXLR.Utility.Plugin.Client;
 using TouchPortal.GoXLR.Utility.Plugin.Enums;
 using TouchPortal.GoXLR.Utility.Plugin.Helpers;
 using TouchPortalSDK.Messages.Events;
@@ -35,7 +36,7 @@ public class Effects
             return;
 
         //TODO: There might be some better way here, ex. instead of On/Off, use Preset -> choice [ Preset1, Preset2, .. ], but how to get Events working best then?
-        var activePreset = EnumHelpers.Parse<EffectBankPresets>(patch.Value.GetString());
+        var activePreset = EnumHelpers.Parse<EffectBankPresets>(patch.Value.GetString()!);
         foreach (var preset in EnumHelpers.GetValues<EffectBankPresets>())
         {
             var booleanState = preset == activePreset
@@ -74,10 +75,10 @@ public class Effects
             EncoderName.Reverb => ValuesHelper.FromValueToPercentage(amount, 0, 100),
             EncoderName.Pitch => ValuesHelper.FromValueToPercentage(amount, -24, 24),
             EncoderName.Echo => ValuesHelper.FromValueToPercentage(amount, 0, 100),
-            EncoderName.Gender => ValuesHelper.FromValueToPercentage(amount, -12, 12)
+            EncoderName.Gender => ValuesHelper.FromValueToPercentage(amount, -12, 12),
+            _ => throw new ArgumentOutOfRangeException()
         };
         
-        Console.WriteLine($"{encoderName}: {amount} -> {percentage}");
         EffectsEncoderAmountUpdated?.Invoke(encoderName.Value, percentage);
     }
 
@@ -143,7 +144,8 @@ public class Effects
             EncoderName.Reverb => ValuesHelper.FromPercentageToValue(percentage, 0, 100),
             EncoderName.Pitch => ValuesHelper.FromPercentageToValue(percentage, -24, 24),
             EncoderName.Echo => ValuesHelper.FromPercentageToValue(percentage, 0, 100),
-            EncoderName.Gender => ValuesHelper.FromPercentageToValue(percentage, -12, 12)
+            EncoderName.Gender => ValuesHelper.FromPercentageToValue(percentage, -12, 12),
+            _ => throw new ArgumentOutOfRangeException()
         };
 
         _client.SendCommand(command, amount);
@@ -173,6 +175,7 @@ public class Effects
             EncoderName.Reverb => "SetReverbAmount",
             EncoderName.Pitch => "SetPitchAmount",
             EncoderName.Gender => "SetGenderAmount",
+            _ => throw new ArgumentOutOfRangeException()
         };
 
     private string GetCommand(EffectsType effectsType)
@@ -182,6 +185,7 @@ public class Effects
             EffectsType.Megaphone => "SetMegaphoneEnabled",
             EffectsType.Robot => "SetRobotEnabled",
             EffectsType.Hardtune => "SetHardTuneEnabled",
+            _ => throw new ArgumentOutOfRangeException()
         };
 
     private bool GetNewEffectsState(EffectsType effectsType, ActionType actionType)

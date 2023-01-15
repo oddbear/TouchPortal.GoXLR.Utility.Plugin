@@ -1,27 +1,16 @@
-﻿using System.Diagnostics;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
 using TouchPortal.GoXLR.Utility.Plugin.Enums;
 using WebSocketSharp;
 
-namespace TouchPortal.GoXLR.Utility.Plugin;
-
-//Things to implement:
-//Volume
-//Channel mute
-//Sampler (might not be done yet)
-//Effects
-//Effects bank
-//Sampler bank (might not be done yet)
-//Bleep Toggle (might not be done yet)
-//Mic Toggle
+namespace TouchPortal.GoXLR.Utility.Plugin.Client;
 
 public class GoXlrUtilityClient : IDisposable
 {
     private readonly ILogger<GoXlrUtilityClient> _logger;
     private readonly Thread _thread;
-    private readonly CancellationTokenSource _cancellationTokenSource = new ();
+    private readonly CancellationTokenSource _cancellationTokenSource = new();
     private readonly JsonSerializerOptions _jsonSerializerOptions;
 
 
@@ -134,7 +123,7 @@ public class GoXlrUtilityClient : IDisposable
                 }
             }
         };
-        
+
         var json = JsonSerializer.Serialize(finalRequest, _jsonSerializerOptions);
         _client?.Send(json);
     }
@@ -179,7 +168,7 @@ public class GoXlrUtilityClient : IDisposable
 
                 TraverseObject(status);
             }
-            
+
             if (data.TryGetProperty("Patch", out var patches))
             {
                 foreach (var patch in patches.Deserialize<Patch[]>(_jsonSerializerOptions)!)
@@ -193,7 +182,7 @@ public class GoXlrUtilityClient : IDisposable
             _logger.LogError(exception, "Parsing GoXLR Utility message failed");
         }
     }
-    
+
     private void TraverseObject(JsonElement jObject, string path = "")
     {
         foreach (var property in jObject.EnumerateObject())
@@ -230,16 +219,4 @@ public class GoXlrUtilityClient : IDisposable
         _cancellationTokenSource.Cancel();
         ((IDisposable?)_client)?.Dispose();
     }
-}
-
-public class Patch
-{
-    [JsonPropertyName("op")]
-    public OpPatchEnum Op { get; set; }
-
-    [JsonPropertyName("path")]
-    public string Path { get; set; }
-
-    [JsonPropertyName("value")]
-    public JsonElement Value { get; set; }
 }

@@ -10,11 +10,11 @@ public static class EnumHelpers
             .Cast<T>()
             .ToArray();
 
-    public static Dictionary<TKey, TValue> CreateDictionaryWithDefaultKeys<TKey, TValue>()
+    public static Dictionary<TKey, TValue?> CreateDictionaryWithDefaultKeys<TKey, TValue>()
         => GetValues<TKey>()
             .ToDictionary(key => key, _ => default(TValue));
 
-    public static Dictionary<(TKeyA, TKeyB), TValue> CreateDictionaryWithDefaultKeys<TKeyA, TKeyB, TValue>()
+    public static Dictionary<(TKeyA, TKeyB), TValue?> CreateDictionaryWithDefaultKeys<TKeyA, TKeyB, TValue>()
         => CompositeKeyGetValues<TKeyA, TKeyB>()
             .ToDictionary(key => key, _ => default(TValue));
 

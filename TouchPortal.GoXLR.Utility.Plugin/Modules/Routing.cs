@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using TouchPortal.GoXLR.Utility.Plugin.Client;
 using TouchPortal.GoXLR.Utility.Plugin.Enums;
 using TouchPortal.GoXLR.Utility.Plugin.Helpers;
 using TouchPortalSDK.Messages.Events;
@@ -63,7 +64,7 @@ public class Routing
             ActionType.Toggle => currentState is not BooleanState.On,
             ActionType.On => true,
             ActionType.Off => false,
-            _ => false
+            _ => throw new ArgumentOutOfRangeException()
         };
     }
 }

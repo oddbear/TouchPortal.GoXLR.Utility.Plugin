@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using TouchPortal.GoXLR.Utility.Plugin.Client;
 using TouchPortal.GoXLR.Utility.Plugin.Enums;
 using TouchPortal.GoXLR.Utility.Plugin.Helpers;
 using TouchPortalSDK.Messages.Events;

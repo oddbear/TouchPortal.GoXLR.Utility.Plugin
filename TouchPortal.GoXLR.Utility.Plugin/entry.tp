@@ -151,6 +151,15 @@
         },
 
         {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.actions.cough.mute",
+          "name": "Cough mute",
+          "prefix": "Plugin",
+          "type": "communicate",
+          "tryInline": true,
+          "hasHoldFunctionality": false
+        },
+
+        {
           "id": "TouchPortal.GoXLR.Utility.Plugin.actions.routing.Microphone.Headphones",
           "name": "Route Microphone Headphones",
           "prefix": "Plugin",
@@ -507,6 +516,19 @@
         },
 
         {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.cough.mute",
+          "type": "choice",
+          "desc": "Cough Mute State",
+          "parentGroup": "Cough State",
+          "default": "Unmuted",
+          "valueChoices": [
+            "Unmuted",
+            "MutedToX",
+            "MutedToAll"
+          ]
+        },
+
+        {
           "id": "TouchPortal.GoXLR.Utility.Plugin.states.faders.A.mute",
           "type": "choice",
           "desc": "Fader A Mute State",
@@ -849,6 +871,20 @@
             "Off"
           ],
           "valueStateId": "TouchPortal.GoXLR.Utility.Plugin.states.effects.Hardtune"
+        },
+
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.events.cough.mute",
+          "name": "Cough Mute Event",
+          "format": "Cough $val",
+          "type": "communicate",
+          "valueType": "choice",
+          "valueChoices": [
+            "Unmuted",
+            "MutedToX",
+            "MutedToAll"
+          ],
+          "valueStateId": "TouchPortal.GoXLR.Utility.Plugin.states.cough.mute"
         },
 
         {

@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using TouchPortal.GoXLR.Utility.Plugin.Client;
 using TouchPortal.GoXLR.Utility.Plugin.Modules;
+using TouchPortal.GoXLR.Utility.Plugin.Plugin;
 using TouchPortalSDK.Configuration;
 
 namespace TouchPortal.GoXLR.Utility.Plugin;
@@ -14,36 +16,40 @@ internal class Program
         EntryCopy.RefreshEntryFile();
 
         var configurationRoot = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+            .SetBasePath(Directory.GetParent(AppContext.BaseDirectory)!.FullName)
             .AddJsonFile("appsettings.json")
             .Build();
 
-        var serviceCollection = new ServiceCollection();
-        serviceCollection.AddTouchPortalSdk(configurationRoot);
-        serviceCollection.AddLogging(configure =>
+        var services = new ServiceCollection();
+
+        services.AddTouchPortalSdk(configurationRoot);
+        services.AddLogging(configure =>
         {
             configure.AddSimpleConsole(options => options.TimestampFormat = "[yyyy.MM.dd HH:mm:ss] ");
             configure.AddConfiguration(configurationRoot.GetSection("Logging"));
         });
-
-        serviceCollection.AddTouchPortalSdk(configurationRoot);
-        serviceCollection.AddSingleton<GoXlrUtilityClient>();
-        serviceCollection.AddSingleton<GoXlrUtilityPlugin>();
-        serviceCollection.AddSingleton<Faders>();
-        serviceCollection.AddSingleton<Channels>();
-        serviceCollection.AddSingleton<Effects>();
-        serviceCollection.AddSingleton<Routing>();
         
-        var serviceProvider = serviceCollection.BuildServiceProvider(true);
+        AddServices(services);
 
-        var plugin = serviceProvider.GetRequiredService<GoXlrUtilityPlugin>();
-        plugin.Run();
+        var serviceProvider = services.BuildServiceProvider(true);
 
-        var client = serviceProvider.GetRequiredService<GoXlrUtilityClient>();
-        client.Start();
+        serviceProvider
+            .GetRequiredService<GoXlrUtilityPlugin>()
+            .Run();
 
+        serviceProvider
+            .GetRequiredService<GoXlrUtilityClient>()
+            .Start();
+    }
 
-        Console.WriteLine("Press key to exit.");
-        Console.ReadLine();
+    private static void AddServices(IServiceCollection services)
+    {
+        services.AddSingleton<GoXlrUtilityClient>();
+        services.AddSingleton<GoXlrUtilityPlugin>();
+        services.AddSingleton<Faders>();
+        services.AddSingleton<Channels>();
+        services.AddSingleton<Effects>();
+        services.AddSingleton<Routing>();
+        services.AddSingleton<Microphone>();
     }
 }

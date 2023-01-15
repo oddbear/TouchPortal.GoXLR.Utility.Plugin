@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 
-namespace TouchPortal.GoXLR.Utility.Plugin;
+namespace TouchPortal.GoXLR.Utility.Plugin.Plugin;
 
 public static class PluginInfo
 {
