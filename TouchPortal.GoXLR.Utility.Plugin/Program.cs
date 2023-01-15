@@ -32,7 +32,8 @@ internal class Program
         serviceCollection.AddSingleton<Faders>();
         serviceCollection.AddSingleton<Channels>();
         serviceCollection.AddSingleton<Effects>();
-
+        serviceCollection.AddSingleton<Routing>();
+        
         var serviceProvider = serviceCollection.BuildServiceProvider(true);
 
         var plugin = serviceProvider.GetRequiredService<GoXlrUtilityPlugin>();

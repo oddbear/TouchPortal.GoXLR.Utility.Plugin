@@ -148,9 +148,176 @@
               ]
             }
           ]
+        },
+
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.actions.routing.Microphone.Headphones",
+          "name": "Route Microphone Headphones",
+          "prefix": "Plugin",
+          "type": "communicate",
+          "tryInline": true,
+          "format": "Microphone to Headphones {$actionType$}",
+          "hasHoldFunctionality": false,
+          "data": [
+            {
+              "id": "actionType",
+              "type": "choice",
+              "label": "Plugin",
+              "default": "Toggle",
+              "valueChoices": [
+                "Toggle",
+                "On",
+                "Off"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.actions.routing.Microphone.BroadcastMix",
+          "name": "Route Microphone BroadcastMix",
+          "prefix": "Plugin",
+          "type": "communicate",
+          "tryInline": true,
+          "format": "Microphone to BroadcastMix {$actionType$}",
+          "hasHoldFunctionality": false,
+          "data": [
+            {
+              "id": "actionType",
+              "type": "choice",
+              "label": "Plugin",
+              "default": "Toggle",
+              "valueChoices": [
+                "Toggle",
+                "On",
+                "Off"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.actions.routing.Microphone.LineOut",
+          "name": "Route Microphone LineOut",
+          "prefix": "Plugin",
+          "type": "communicate",
+          "tryInline": true,
+          "format": "Microphone to LineOut {$actionType$}",
+          "hasHoldFunctionality": false,
+          "data": [
+            {
+              "id": "actionType",
+              "type": "choice",
+              "label": "Plugin",
+              "default": "Toggle",
+              "valueChoices": [
+                "Toggle",
+                "On",
+                "Off"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.actions.routing.Microphone.ChatMic",
+          "name": "Route Microphone ChatMic",
+          "prefix": "Plugin",
+          "type": "communicate",
+          "tryInline": true,
+          "format": "Microphone to ChatMic {$actionType$}",
+          "hasHoldFunctionality": false,
+          "data": [
+            {
+              "id": "actionType",
+              "type": "choice",
+              "label": "Plugin",
+              "default": "Toggle",
+              "valueChoices": [
+                "Toggle",
+                "On",
+                "Off"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.actions.routing.Microphone.Sampler",
+          "name": "Route Microphone Sampler",
+          "prefix": "Plugin",
+          "type": "communicate",
+          "tryInline": true,
+          "format": "Microphone to Sampler {$actionType$}",
+          "hasHoldFunctionality": false,
+          "data": [
+            {
+              "id": "actionType",
+              "type": "choice",
+              "label": "Plugin",
+              "default": "Toggle",
+              "valueChoices": [
+                "Toggle",
+                "On",
+                "Off"
+              ]
+            }
+          ]
         }
       ],
       "states": [
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.routing.Microphone.Headphones",
+          "type": "choice",
+          "desc": "Routing Microphone to Headphone",
+          "parentGroup": "Routing",
+          "default": "On",
+          "valueChoices": [
+            "On",
+            "Off"
+          ]
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.routing.Microphone.BroadcastMix",
+          "type": "choice",
+          "desc": "Routing Microphone to BroadcastMix",
+          "parentGroup": "Routing",
+          "default": "On",
+          "valueChoices": [
+            "On",
+            "Off"
+          ]
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.routing.Microphone.LineOut",
+          "type": "choice",
+          "desc": "Routing Microphone to LineOut",
+          "parentGroup": "Routing",
+          "default": "On",
+          "valueChoices": [
+            "On",
+            "Off"
+          ]
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.routing.Microphone.ChatMic",
+          "type": "choice",
+          "desc": "Routing Microphone to ChatMic",
+          "parentGroup": "Routing",
+          "default": "On",
+          "valueChoices": [
+            "On",
+            "Off"
+          ]
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.routing.Microphone.Sampler",
+          "type": "choice",
+          "desc": "Routing Microphone to Sampler",
+          "parentGroup": "Routing",
+          "default": "On",
+          "valueChoices": [
+            "On",
+            "Off"
+          ]
+        },
+
         {
           "id": "TouchPortal.GoXLR.Utility.Plugin.states.channel.Mic.volume",
           "type": "text",
@@ -501,6 +668,67 @@
         }
       ],
       "events": [
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.events.routing.Microphone.Headphones",
+          "name": "Routing Microphone to Headphones Event",
+          "format": "Routing Microphone to Headphones $val",
+          "type": "communicate",
+          "valueType": "choice",
+          "valueChoices": [
+            "On",
+            "Off"
+          ],
+          "valueStateId": "TouchPortal.GoXLR.Utility.Plugin.states.routing.Microphone.Headphones"
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.events.routing.Microphone.BroadcastMix",
+          "name": "Routing Microphone to BroadcastMix Event",
+          "format": "Routing Microphone to BroadcastMix $val",
+          "type": "communicate",
+          "valueType": "choice",
+          "valueChoices": [
+            "On",
+            "Off"
+          ],
+          "valueStateId": "TouchPortal.GoXLR.Utility.Plugin.states.routing.Microphone.BroadcastMix"
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.events.routing.Microphone.LineOut",
+          "name": "Routing Microphone to LineOut Event",
+          "format": "Routing Microphone to LineOut $val",
+          "type": "communicate",
+          "valueType": "choice",
+          "valueChoices": [
+            "On",
+            "Off"
+          ],
+          "valueStateId": "TouchPortal.GoXLR.Utility.Plugin.states.routing.Microphone.LineOut"
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.events.routing.Microphone.ChatMic",
+          "name": "Routing Microphone to ChatMic Event",
+          "format": "Routing Microphone to ChatMic $val",
+          "type": "communicate",
+          "valueType": "choice",
+          "valueChoices": [
+            "On",
+            "Off"
+          ],
+          "valueStateId": "TouchPortal.GoXLR.Utility.Plugin.states.routing.Microphone.ChatMic"
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.events.routing.Microphone.Sampler",
+          "name": "Routing Microphone to Sampler Event",
+          "format": "Routing Microphone to Sampler $val",
+          "type": "communicate",
+          "valueType": "choice",
+          "valueChoices": [
+            "On",
+            "Off"
+          ],
+          "valueStateId": "TouchPortal.GoXLR.Utility.Plugin.states.routing.Microphone.Sampler"
+        },
+
         {
           "id": "TouchPortal.GoXLR.Utility.Plugin.events.effects.Preset1",
           "name": "Effects Preset1 Event",

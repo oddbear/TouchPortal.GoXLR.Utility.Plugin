@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.Logging;
 using TouchPortal.GoXLR.Utility.Plugin.Enums;
 using WebSocketSharp;
 
@@ -18,6 +19,7 @@ namespace TouchPortal.GoXLR.Utility.Plugin;
 
 public class GoXlrUtilityClient : IDisposable
 {
+    private readonly ILogger<GoXlrUtilityClient> _logger;
     private readonly Thread _thread;
     private readonly CancellationTokenSource _cancellationTokenSource = new ();
     private readonly JsonSerializerOptions _jsonSerializerOptions;
@@ -36,8 +38,10 @@ public class GoXlrUtilityClient : IDisposable
     public event EventHandler<Patch>? PatchEvent;
     //public event EventHandler<(PluginStatus status, string message)> PluginStatusEvent;
 
-    public GoXlrUtilityClient()
+    public GoXlrUtilityClient(
+        ILogger<GoXlrUtilityClient> logger)
     {
+        _logger = logger;
         _thread = new Thread(Reconnect);
         _jsonSerializerOptions = new JsonSerializerOptions
         {
@@ -62,22 +66,12 @@ public class GoXlrUtilityClient : IDisposable
                 _client ??= CreateClient();
 
                 _client.Connect();
-
-                if (Connected())
-                {
-                    //PluginStatusEvent?.Invoke(this, (PluginStatus.Normal, "Connected"));
-                }
-                else
-                {
-                    //PluginStatusEvent?.Invoke(this, (PluginStatus.Warning, "Could not connect to goxlr utility, is it running on this machine?"));
-                }
             }
             catch (Exception exception)
             {
                 if (exception.Message != "A series of reconnecting has failed.")
                 {
-                    Trace.WriteLine($"{exception.GetType().Name}: {exception.Message}");
-                    //PluginStatusEvent?.Invoke(this, (PluginStatus.Error, $"Error: {exception.Message}"));
+                    _logger.LogError(exception, "A series of reconnecting has failed.");
                 }
 
                 IDisposable? oldClient = _client;
@@ -169,7 +163,10 @@ public class GoXlrUtilityClient : IDisposable
 
             if (!jsonElement.TryGetProperty("data", out var data))
                 return;
-            
+
+            if (data.ValueKind is not JsonValueKind.Object)
+                return; //Ex. string if "data" is "Ok"
+
             if (data.TryGetProperty("Status", out var status))
             {
                 if (status.TryGetProperty("mixers", out var mixers))
@@ -193,7 +190,7 @@ public class GoXlrUtilityClient : IDisposable
         }
         catch (Exception exception)
         {
-            Console.WriteLine(exception);
+            _logger.LogError(exception, "Parsing GoXLR Utility message failed");
         }
     }
     
@@ -224,7 +221,7 @@ public class GoXlrUtilityClient : IDisposable
         }
         catch (Exception exception)
         {
-            Console.WriteLine(exception);
+            _logger.LogError(exception, "Invoke Patch failed");
         }
     }
 

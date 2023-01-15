@@ -17,6 +17,7 @@ public class GoXlrUtilityPlugin : ITouchPortalEventHandler
     private readonly Faders _faders;
     private readonly Channels _channels;
     private readonly Effects _effects;
+    private readonly Routing _routing;
 
     public string PluginId => "TouchPortal.GoXLR.Utility.Plugin";
 
@@ -25,7 +26,8 @@ public class GoXlrUtilityPlugin : ITouchPortalEventHandler
         ILogger<GoXlrUtilityPlugin> logger,
         Faders faders,
         Channels channels,
-        Effects effects)
+        Effects effects,
+        Routing routing)
     {
         _client = clientFactory.Create(this);
         
@@ -34,6 +36,7 @@ public class GoXlrUtilityPlugin : ITouchPortalEventHandler
         _faders = faders;
         _channels = channels;
         _effects = effects;
+        _routing = routing;
 
         _faders.VolumeUpdated += FaderVolumeUpdated;
         _faders.MuteUpdated += FaderMuteUpdated;
@@ -43,6 +46,13 @@ public class GoXlrUtilityPlugin : ITouchPortalEventHandler
 
         _effects.EffectsStateUpdated += EffectsOnEffectsStateUpdated;
         _effects.EffectsPresetUpdated += EffectsOnEffectsPresetUpdated;
+
+        _routing.RoutingUpdated += RoutingOnRoutingUpdated;
+    }
+
+    private void RoutingOnRoutingUpdated(InputDevice input, OutputDevice output, BooleanState state)
+    {
+        _client.StateUpdate($"TouchPortal.GoXLR.Utility.Plugin.states.routing.{input}.{output}", state.ToString());
     }
 
     private void EffectsOnEffectsPresetUpdated(EffectBankPresets effectPreset, BooleanState state)
@@ -102,9 +112,15 @@ public class GoXlrUtilityPlugin : ITouchPortalEventHandler
     {
         //
     }
-
+    
     public void OnActionEvent(ActionEvent message)
     {
+        if (message.ActionId.StartsWith("TouchPortal.GoXLR.Utility.Plugin.actions.routing."))
+        {
+            _routing.SetRouting(message);
+            return;
+        }
+
         if (message.ActionId.StartsWith("TouchPortal.GoXLR.Utility.Plugin.actions.effects."))
         {
             _effects.SetEffect(message);

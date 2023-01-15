@@ -123,10 +123,10 @@ public class Effects
 
     private bool GetNewEffectsState(EffectsType effectsType, ActionType actionType)
     {
-        var effectState = _currentEffectState[effectsType];
+        var currentState = _currentEffectState[effectsType];
         return actionType switch
         {
-            ActionType.Toggle => effectState is not BooleanState.On,
+            ActionType.Toggle => currentState is not BooleanState.On,
             ActionType.On => true,
             ActionType.Off => false,
             _ => false
