@@ -22,12 +22,15 @@ public class GoXlrUtilityClient : IDisposable
     private readonly CancellationTokenSource _cancellationTokenSource = new ();
     private readonly JsonSerializerOptions _jsonSerializerOptions;
 
+
     private WebSocket? _client;
 
     private int _commandIndex = 0;
 
     /// <summary>Serial numbers of devices.</summary>
     public string[]? Devices;
+
+    public Dictionary<string, JsonElement> States = new();
 
     /// <summary>Event handler for patches.</summary>
     public event EventHandler<Patch>? PatchEvent;
@@ -184,13 +187,13 @@ public class GoXlrUtilityClient : IDisposable
             {
                 foreach (var patch in patches.Deserialize<Patch[]>(_jsonSerializerOptions)!)
                 {
-                    PatchEvent?.Invoke(this, patch);
+                    InvokePatch(patch);
                 }
             }
         }
-        catch (Exception ex)
+        catch (Exception exception)
         {
-            //message.Dump("Error");
+            Console.WriteLine(exception);
         }
     }
     
@@ -206,9 +209,22 @@ public class GoXlrUtilityClient : IDisposable
                     break;
 
                 default:
-                    PatchEvent?.Invoke(this, new Patch { Op = OpPatchEnum.Replace, Path = currentPath, Value = property.Value });
+                    InvokePatch(new Patch { Op = OpPatchEnum.Replace, Path = currentPath, Value = property.Value });
                     break;
             }
+        }
+    }
+
+    private void InvokePatch(Patch patch)
+    {
+        try
+        {
+            States[patch.Path] = patch.Value;
+            PatchEvent?.Invoke(this, patch);
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception);
         }
     }
 

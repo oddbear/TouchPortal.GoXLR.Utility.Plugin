@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using TouchPortal.GoXLR.Utility.Plugin.Modules;
 using TouchPortalSDK.Configuration;
 
 namespace TouchPortal.GoXLR.Utility.Plugin;
@@ -30,6 +31,7 @@ internal class Program
         serviceCollection.AddSingleton<GoXlrUtilityPlugin>();
         serviceCollection.AddSingleton<Faders>();
         serviceCollection.AddSingleton<Channels>();
+        serviceCollection.AddSingleton<Effects>();
 
         var serviceProvider = serviceCollection.BuildServiceProvider(true);
 

@@ -12,13 +12,128 @@
       "name": "TouchPortal.GoXLR.Utility.Plugin",
       "actions": [
         {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.actions.effects.Preset",
+          "name": "Set Effect Preset",
+          "prefix": "Plugin",
+          "type": "communicate",
+          "tryInline": true,
+          "format": "Preset {$presetName$}",
+          "hasHoldFunctionality": false,
+          "data": [
+            {
+              "id": "presetName",
+              "type": "choice",
+              "label": "Plugin",
+              "default": "Preset1",
+              "valueChoices": [
+                "Preset1",
+                "Preset2",
+                "Preset3",
+                "Preset4",
+                "Preset5",
+                "Preset6"
+              ]
+            }
+          ]
+        },
+
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.actions.effects.Fx",
+          "name": "Set FX",
+          "prefix": "Plugin",
+          "type": "communicate",
+          "tryInline": true,
+          "format": "FX {$actionType$}",
+          "hasHoldFunctionality": false,
+          "data": [
+            {
+              "id": "actionType",
+              "type": "choice",
+              "label": "Plugin",
+              "default": "Toggle",
+              "valueChoices": [
+                "Toggle",
+                "On",
+                "Off"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.actions.effects.Megaphone",
+          "name": "Set Megaphone",
+          "prefix": "Plugin",
+          "type": "communicate",
+          "tryInline": true,
+          "format": "Megaphone {$actionType$}",
+          "hasHoldFunctionality": false,
+          "data": [
+            {
+              "id": "actionType",
+              "type": "choice",
+              "label": "Plugin",
+              "default": "Toggle",
+              "valueChoices": [
+                "Toggle",
+                "On",
+                "Off"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.actions.effects.Robot",
+          "name": "Set Robot",
+          "prefix": "Plugin",
+          "type": "communicate",
+          "tryInline": true,
+          "format": "Robot {$actionType$}",
+          "hasHoldFunctionality": false,
+          "data": [
+            {
+              "id": "actionType",
+              "type": "choice",
+              "label": "Plugin",
+              "default": "Toggle",
+              "valueChoices": [
+                "Toggle",
+                "On",
+                "Off"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.actions.effects.Hardtune",
+          "name": "Set Hardtune",
+          "prefix": "Plugin",
+          "type": "communicate",
+          "tryInline": true,
+          "format": "Hardtune {$actionType$}",
+          "hasHoldFunctionality": false,
+          "data": [
+            {
+              "id": "actionType",
+              "type": "choice",
+              "label": "Plugin",
+              "default": "Toggle",
+              "valueChoices": [
+                "Toggle",
+                "On",
+                "Off"
+              ]
+            }
+          ]
+        },
+
+        {
           "id": "TouchPortal.GoXLR.Utility.Plugin.actions.faders.mute",
           "name": "Fader mute",
           "prefix": "Plugin",
           "type": "communicate",
           "tryInline": true,
           "format": "Fader {$faderName$}",
-          "hasHoldFunctionality": true,
+          "hasHoldFunctionality": false,
           "data": [
             {
               "id": "faderName",
@@ -271,9 +386,243 @@
             "MutedToX",
             "MutedToAll"
           ]
+        },
+
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.effects.Fx",
+          "type": "choice",
+          "desc": "Effects Fx State",
+          "parentGroup": "Effects State",
+          "default": "On",
+          "valueChoices": [
+            "On",
+            "Off"
+          ]
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.effects.Megaphone",
+          "type": "choice",
+          "desc": "Effects Megaphone State",
+          "parentGroup": "Effects State",
+          "default": "On",
+          "valueChoices": [
+            "On",
+            "Off"
+          ]
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.effects.Robot",
+          "type": "choice",
+          "desc": "Effects Robot State",
+          "parentGroup": "Effects State",
+          "default": "On",
+          "valueChoices": [
+            "On",
+            "Off"
+          ]
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.effects.Hardtune",
+          "type": "choice",
+          "desc": "Effects Hardtune State",
+          "parentGroup": "Effects State",
+          "default": "On",
+          "valueChoices": [
+            "On",
+            "Off"
+          ]
+        },
+
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.effects.Preset1",
+          "type": "choice",
+          "desc": "Effects Preset1 State",
+          "parentGroup": "Effects State",
+          "default": "On",
+          "valueChoices": [
+            "On",
+            "Off"
+          ]
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.effects.Preset2",
+          "type": "choice",
+          "desc": "Effects Preset2 State",
+          "parentGroup": "Effects State",
+          "default": "On",
+          "valueChoices": [
+            "On",
+            "Off"
+          ]
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.effects.Preset3",
+          "type": "choice",
+          "desc": "Effects Preset3 State",
+          "parentGroup": "Effects State",
+          "default": "On",
+          "valueChoices": [
+            "On",
+            "Off"
+          ]
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.effects.Preset4",
+          "type": "choice",
+          "desc": "Effects Preset4 State",
+          "parentGroup": "Effects State",
+          "default": "On",
+          "valueChoices": [
+            "On",
+            "Off"
+          ]
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.effects.Preset5",
+          "type": "choice",
+          "desc": "Effects Preset5 State",
+          "parentGroup": "Effects State",
+          "default": "On",
+          "valueChoices": [
+            "On",
+            "Off"
+          ]
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.states.effects.Preset6",
+          "type": "choice",
+          "desc": "Effects Preset6 State",
+          "parentGroup": "Effects State",
+          "default": "On",
+          "valueChoices": [
+            "On",
+            "Off"
+          ]
         }
       ],
       "events": [
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.events.effects.Preset1",
+          "name": "Effects Preset1 Event",
+          "format": "Effects Preset1 $val",
+          "type": "communicate",
+          "valueType": "choice",
+          "valueChoices": [
+            "On",
+            "Off"
+          ],
+          "valueStateId": "TouchPortal.GoXLR.Utility.Plugin.states.effects.Preset1"
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.events.effects.Preset2",
+          "name": "Effects Preset2 Event",
+          "format": "Effects Preset2 $val",
+          "type": "communicate",
+          "valueType": "choice",
+          "valueChoices": [
+            "On",
+            "Off"
+          ],
+          "valueStateId": "TouchPortal.GoXLR.Utility.Plugin.states.effects.Preset2"
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.events.effects.Preset3",
+          "name": "Effects Preset3 Event",
+          "format": "Effects Preset3 $val",
+          "type": "communicate",
+          "valueType": "choice",
+          "valueChoices": [
+            "On",
+            "Off"
+          ],
+          "valueStateId": "TouchPortal.GoXLR.Utility.Plugin.states.effects.Preset3"
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.events.effects.Preset4",
+          "name": "Effects Preset4 Event",
+          "format": "Effects Preset4 $val",
+          "type": "communicate",
+          "valueType": "choice",
+          "valueChoices": [
+            "On",
+            "Off"
+          ],
+          "valueStateId": "TouchPortal.GoXLR.Utility.Plugin.states.effects.Preset4"
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.events.effects.Preset5",
+          "name": "Effects Preset5 Event",
+          "format": "Effects Preset5 $val",
+          "type": "communicate",
+          "valueType": "choice",
+          "valueChoices": [
+            "On",
+            "Off"
+          ],
+          "valueStateId": "TouchPortal.GoXLR.Utility.Plugin.states.effects.Preset5"
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.events.effects.Preset6",
+          "name": "Effects Preset6 Event",
+          "format": "Effects Preset6 $val",
+          "type": "communicate",
+          "valueType": "choice",
+          "valueChoices": [
+            "On",
+            "Off"
+          ],
+          "valueStateId": "TouchPortal.GoXLR.Utility.Plugin.states.effects.Preset6"
+        },
+
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.events.effects.Fx",
+          "name": "Effects Fx Event",
+          "format": "Effects Fx $val",
+          "type": "communicate",
+          "valueType": "choice",
+          "valueChoices": [
+            "On",
+            "Off"
+          ],
+          "valueStateId": "TouchPortal.GoXLR.Utility.Plugin.states.effects.Fx"
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.events.effects.Megaphone",
+          "name": "Effects Megaphone Event",
+          "format": "Effects Megaphone $val",
+          "type": "communicate",
+          "valueType": "choice",
+          "valueChoices": [
+            "On",
+            "Off"
+          ],
+          "valueStateId": "TouchPortal.GoXLR.Utility.Plugin.states.effects.Megaphone"
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.events.effects.Robot",
+          "name": "Effects Robot Event",
+          "format": "Effects Robot $val",
+          "type": "communicate",
+          "valueType": "choice",
+          "valueChoices": [
+            "On",
+            "Off"
+          ],
+          "valueStateId": "TouchPortal.GoXLR.Utility.Plugin.states.effects.Robot"
+        },
+        {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.events.effects.Hardtune",
+          "name": "Effects Hardtune Event",
+          "format": "Effects Hardtune $val",
+          "type": "communicate",
+          "valueType": "choice",
+          "valueChoices": [
+            "On",
+            "Off"
+          ],
+          "valueStateId": "TouchPortal.GoXLR.Utility.Plugin.states.effects.Hardtune"
+        },
+
         {
           "id": "TouchPortal.GoXLR.Utility.Plugin.events.faders.A.mute",
           "name": "Fader A Mute Event",

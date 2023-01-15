@@ -3,18 +3,18 @@ using TouchPortal.GoXLR.Utility.Plugin.Enums;
 using TouchPortal.GoXLR.Utility.Plugin.Helpers;
 using TouchPortalSDK.Messages.Events;
 
-namespace TouchPortal.GoXLR.Utility.Plugin;
+namespace TouchPortal.GoXLR.Utility.Plugin.Modules;
 
 public class Channels
 {
     private readonly GoXlrUtilityClient _client;
-    
+
     public event Action<ChannelName, int>? VolumeUpdated;
 
     public Channels(GoXlrUtilityClient client)
     {
         _client = client;
-        
+
         _client.PatchEvent += ChannelVolumeChangeEvent;
     }
 

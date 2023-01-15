@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using TouchPortal.GoXLR.Utility.Plugin.Enums;
+using TouchPortal.GoXLR.Utility.Plugin.Modules;
 using TouchPortalSDK;
 using TouchPortalSDK.Interfaces;
 using TouchPortalSDK.Messages.Events;
@@ -15,6 +16,7 @@ public class GoXlrUtilityPlugin : ITouchPortalEventHandler
 
     private readonly Faders _faders;
     private readonly Channels _channels;
+    private readonly Effects _effects;
 
     public string PluginId => "TouchPortal.GoXLR.Utility.Plugin";
 
@@ -22,7 +24,8 @@ public class GoXlrUtilityPlugin : ITouchPortalEventHandler
         ITouchPortalClientFactory clientFactory,
         ILogger<GoXlrUtilityPlugin> logger,
         Faders faders,
-        Channels channels)
+        Channels channels,
+        Effects effects)
     {
         _client = clientFactory.Create(this);
         
@@ -30,12 +33,26 @@ public class GoXlrUtilityPlugin : ITouchPortalEventHandler
 
         _faders = faders;
         _channels = channels;
-        
+        _effects = effects;
+
         _faders.VolumeUpdated += FaderVolumeUpdated;
         _faders.MuteUpdated += FaderMuteUpdated;
         _faders.ChannelUpdated += FaderChannelUpdated;
 
         _channels.VolumeUpdated += ChannelVolumeUpdate;
+
+        _effects.EffectsStateUpdated += EffectsOnEffectsStateUpdated;
+        _effects.EffectsPresetUpdated += EffectsOnEffectsPresetUpdated;
+    }
+
+    private void EffectsOnEffectsPresetUpdated(EffectBankPresets effectPreset, BooleanState state)
+    {
+        _client.StateUpdate($"TouchPortal.GoXLR.Utility.Plugin.states.effects.{effectPreset}", state.ToString());
+    }
+
+    private void EffectsOnEffectsStateUpdated(EffectsType effectsType, BooleanState state)
+    {
+        _client.StateUpdate($"TouchPortal.GoXLR.Utility.Plugin.states.effects.{effectsType}", state.ToString());
     }
 
     private void FaderChannelUpdated(FaderName faderName, ChannelName channelName)
@@ -88,6 +105,12 @@ public class GoXlrUtilityPlugin : ITouchPortalEventHandler
 
     public void OnActionEvent(ActionEvent message)
     {
+        if (message.ActionId.StartsWith("TouchPortal.GoXLR.Utility.Plugin.actions.effects."))
+        {
+            _effects.SetEffect(message);
+            return;
+        }
+
         switch (message.ActionId)
         {
             case "TouchPortal.GoXLR.Utility.Plugin.actions.faders.mute":

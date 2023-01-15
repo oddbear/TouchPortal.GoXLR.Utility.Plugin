@@ -3,7 +3,7 @@ using TouchPortal.GoXLR.Utility.Plugin.Enums;
 using TouchPortal.GoXLR.Utility.Plugin.Helpers;
 using TouchPortalSDK.Messages.Events;
 
-namespace TouchPortal.GoXLR.Utility.Plugin;
+namespace TouchPortal.GoXLR.Utility.Plugin.Modules;
 
 public class Faders
 {
@@ -86,19 +86,19 @@ public class Faders
         var channelName = EnumHelpers.Parse<ChannelName>(match.Groups["channelName"].Value);
         var volume = patch.Value.GetInt32();
         var volumeInPercent = ValuesHelper.FromVolumeToVolumePercentage(volume);
-        
+
         _channelVolume[channelName] = volumeInPercent;
 
         var fader = DictionaryHelper.GetKeyFromValue(_faderChannel, channelName);
 
         VolumeUpdated?.Invoke(fader, volumeInPercent);
     }
-    
+
     public void SetVolume(ConnectorChangeEvent message)
     {
 
         var volume = ValuesHelper.FromVolumePercentageToVolume(message.Value);
-        
+
         var faderName = EnumHelpers.Parse<FaderName>(message.GetValue("faderName"));
         var channel = _faderChannel[faderName];
 
@@ -115,7 +115,7 @@ public class Faders
             _client.SendCommand("SetFaderMuteState", faderName, MuteState.Unmuted);
             return;
         }
-        
+
         //We need to use muteFunction to determine the correct mute state:
         var muteFunction = _muteFunctions[faderName];
         var muteState = muteFunction == MuteFunction.All
