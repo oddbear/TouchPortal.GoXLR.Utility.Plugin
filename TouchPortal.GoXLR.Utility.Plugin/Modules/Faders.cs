@@ -96,7 +96,6 @@ public class Faders
 
     public void SetVolume(ConnectorChangeEvent message)
     {
-
         var volume = ValuesHelper.FromVolumePercentageToVolume(message.Value);
 
         var faderName = EnumHelpers.Parse<FaderName>(message.GetValue("faderName"));

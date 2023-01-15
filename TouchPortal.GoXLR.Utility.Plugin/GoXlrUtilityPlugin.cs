@@ -19,6 +19,8 @@ public class GoXlrUtilityPlugin : ITouchPortalEventHandler
     private readonly Effects _effects;
     private readonly Routing _routing;
 
+    private List<ConnectorInfo> _connectors = new ();
+
     public string PluginId => "TouchPortal.GoXLR.Utility.Plugin";
 
     public GoXlrUtilityPlugin(
@@ -46,8 +48,20 @@ public class GoXlrUtilityPlugin : ITouchPortalEventHandler
 
         _effects.EffectsStateUpdated += EffectsOnEffectsStateUpdated;
         _effects.EffectsPresetUpdated += EffectsOnEffectsPresetUpdated;
+        _effects.EffectsEncoderAmountUpdated += EffectsOnEncoderAmountUpdated;
 
         _routing.RoutingUpdated += RoutingOnRoutingUpdated;
+    }
+
+    private void EffectsOnEncoderAmountUpdated(EncoderName encoderName, int amount)
+    {
+        //TODO: I got some issue with Pitch updating all other, but the others does not update pitch. ShortId did not help.
+        //var shortId = _connectors
+        //    .Where(connectorInfo => connectorInfo.ConnectorId == "TouchPortal.GoXLR.Utility.Plugin.connector.effects.encoder")
+        //    .Single(connectorInfo => connectorInfo.GetValue("encoderName") == encoderName.ToString())
+        //    .ShortId;
+
+        _client.ConnectorUpdate($"TouchPortal.GoXLR.Utility.Plugin.connector.effects.encoder|encoderName={encoderName}", amount);
     }
 
     private void RoutingOnRoutingUpdated(InputDevice input, OutputDevice output, BooleanState state)
@@ -150,12 +164,15 @@ public class GoXlrUtilityPlugin : ITouchPortalEventHandler
             case "TouchPortal.GoXLR.Utility.Plugin.connector.channels.volume":
                 _channels.SetVolume(message);
                 break;
+            case "TouchPortal.GoXLR.Utility.Plugin.connector.effects.encoder":
+                _effects.SetEffectAmount(message);
+                break;
         }
     }
     
     public void OnShortConnectorIdNotificationEvent(ConnectorInfo connectorInfo)
     {
-        //TODO:
+        _connectors.Add(connectorInfo);
     }
 
     public void OnClosedEvent(string message)

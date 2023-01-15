@@ -906,6 +906,26 @@
       ],
       "connectors": [
         {
+          "id": "TouchPortal.GoXLR.Utility.Plugin.connector.effects.encoder",
+          "name": "Effect Encoder",
+          "format": "Encoder {$encoderName$}",
+          "data": [
+            {
+              "id": "encoderName",
+              "type": "choice",
+              "label": "Plugin",
+              "default": "Reverb",
+              "valueChoices": [
+                "Reverb",
+                "Pitch",
+                "Echo",
+                "Gender"
+              ]
+            }
+          ]
+        },
+
+        {
           "id": "TouchPortal.GoXLR.Utility.Plugin.connector.faders.volume",
           "name": "Fader volume",
           "format": "Fader {$faderName$}",

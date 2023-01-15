@@ -14,12 +14,14 @@ public class Effects
 
     public event Action<EffectsType, BooleanState>? EffectsStateUpdated;
     public event Action<EffectBankPresets, BooleanState>? EffectsPresetUpdated;
+    public event Action<EncoderName, int>? EffectsEncoderAmountUpdated;
 
     public Effects(GoXlrUtilityClient client)
     {
         _client = client;
 
         _client.PatchEvent += ActivePresetChangeEvent;
+        _client.PatchEvent += EffectAmountChangeEvent;
         _client.PatchEvent += ChannelVolumeChangeEvent;
 
         _currentEffectState = EnumHelpers.CreateDictionaryWithDefaultKeys<EffectsType, BooleanState>();
@@ -45,6 +47,40 @@ public class Effects
         }
     }
     
+    private void EffectAmountChangeEvent(object sender, Patch patch)
+    {
+        var match = Regex.Match(patch.Path, @"/mixers/(?<serial>\w+)/effects/(?<effectPath>.+)");
+        if (!match.Success)
+            return;
+
+        var effectPath = match.Groups["effectPath"].Value;
+
+        EncoderName? encoderName = effectPath switch
+        {
+            "current/reverb/amount" => EncoderName.Reverb,
+            "current/pitch/amount" => EncoderName.Pitch,
+            "current/echo/amount" => EncoderName.Echo,
+            "current/gender/amount" => EncoderName.Gender,
+            _ => null
+        };
+
+        if (encoderName is null)
+            return;
+
+        var amount = patch.Value.GetSByte();
+
+        var percentage = encoderName switch
+        {
+            EncoderName.Reverb => ValuesHelper.FromValueToPercentage(amount, 0, 100),
+            EncoderName.Pitch => ValuesHelper.FromValueToPercentage(amount, -24, 24),
+            EncoderName.Echo => ValuesHelper.FromValueToPercentage(amount, 0, 100),
+            EncoderName.Gender => ValuesHelper.FromValueToPercentage(amount, -12, 12)
+        };
+        
+        Console.WriteLine($"{encoderName}: {amount} -> {percentage}");
+        EffectsEncoderAmountUpdated?.Invoke(encoderName.Value, percentage);
+    }
+
     private void ChannelVolumeChangeEvent(object sender, Patch patch)
     {
         var match = Regex.Match(patch.Path, @"/mixers/(?<serial>\w+)/effects/(?<effectPath>.+)");
@@ -95,6 +131,24 @@ public class Effects
         }
     }
 
+    public void SetEffectAmount(ConnectorChangeEvent message)
+    {
+        var encoderName = EnumHelpers.Parse<EncoderName>(message.GetValue("encoderName"));
+
+        var command = GetCommand(encoderName);
+
+        var percentage = message.Value;
+        var amount = encoderName switch
+        {
+            EncoderName.Reverb => ValuesHelper.FromPercentageToValue(percentage, 0, 100),
+            EncoderName.Pitch => ValuesHelper.FromPercentageToValue(percentage, -24, 24),
+            EncoderName.Echo => ValuesHelper.FromPercentageToValue(percentage, 0, 100),
+            EncoderName.Gender => ValuesHelper.FromPercentageToValue(percentage, -12, 12)
+        };
+
+        _client.SendCommand(command, amount);
+    }
+
     private void SetEffectPreset(ActionEvent message)
     {
         var bankPresets = EnumHelpers.Parse<EffectBankPresets>(message.GetValue("presetName"));
@@ -111,7 +165,16 @@ public class Effects
 
         _client.SendCommand(command, enable);
     }
-    
+
+    private string GetCommand(EncoderName encoderName)
+        => encoderName switch
+        {
+            EncoderName.Echo => "SetEchoAmount",
+            EncoderName.Reverb => "SetReverbAmount",
+            EncoderName.Pitch => "SetPitchAmount",
+            EncoderName.Gender => "SetGenderAmount",
+        };
+
     private string GetCommand(EffectsType effectsType)
         => effectsType switch
         {
